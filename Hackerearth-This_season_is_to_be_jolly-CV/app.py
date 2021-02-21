@@ -22,7 +22,7 @@ from keras.preprocessing.image import img_to_array
 @st.cache(suppress_st_warning=True)
 def prediction_fun(img):
     # st.write("Caching for the first time")
-    pred_model=keras.models.load_model('.\TL_Inception_resnet_v2.h5')
+    pred_model=keras.models.load_model('./TL_Inception_resnet_v2.h5')
     return pred_model.predict(img.reshape(1,224,224,3))
     
 
