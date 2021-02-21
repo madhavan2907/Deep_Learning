@@ -17,12 +17,15 @@ from keras.applications.inception_v3 import preprocess_input
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
 
+@st.cache(suppress_st_warning=True)
+def prediction_fun(img):
+    # st.write("Caching for the first time")
+    pred_model=keras.models.load_model("./Notebooks/Models/TL_Inception_resnet_v2.h5")
+    return pred_model.predict(img.reshape(1,224,224,3))
 
-pred_model1=keras.models.load_model("./Notebooks/Models/TL_Inception_resnet_v2.h5")
-# pred_model2=keras.models.load_model("TL_VGG16.h5")
-# pred_model3=keras.models.load_model("TL_inception.h5")
 
-freq_plot = Image.open("./plot.jpg")
+
+
 
 def main():
     # st.title("Image classification through Transfer Learning")
@@ -77,25 +80,28 @@ def main():
 
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
+    freq_plot = Image.open("./plot.jpg")
     st.write("Output class distribution")
     st.image(freq_plot,  use_column_width=True)
     # Getting Inputs and processing it for prediction
     image_upload = st.file_uploader("Upload the image", type='jpg')
 
     if image_upload is not None:
-        image = Image.open(image_upload)
-        new_width  = 224
-        new_height = 224
-        image = image.resize((new_width, new_height), Image.ANTIALIAS)
-        st.image(image_upload, caption='Uploaded Image.', use_column_width=True)
+            st.image(image_upload, caption='Uploaded Image.', use_column_width=True)
 
+    
 
+    
     if st.button("Predict"):
 
         print('Predicting')
 
         
-        preprocess = imagenet_utils.preprocess_input
+        # preprocess = imagenet_utils.preprocess_input
+        image = Image.open(image_upload)
+        new_width  = 224
+        new_height = 224
+        image = image.resize((new_width, new_height), Image.ANTIALIAS)
         image = img_to_array(image)
         image = image/255
         # print("Done")
@@ -103,27 +109,15 @@ def main():
 
 
         print(f"[#] classifying image with Inception_Resnet_V2'... ")
-        pred1 = pred_model1.predict(image.reshape(1,224,224,3))
+        pred = prediction_fun(image)
 
 
         classes = ['Airplane', 'Candle', 'Christmas_Tree', 'Jacket', 'Miscellaneous', 'Snowman']
-        prediction1=[]
-        prediction1.append(classes[np.argmax(pred1[0])])
-        print(prediction1)
-        st.warning(f"Pred1 {prediction1}")
-
-        # prediction2=[]
-        # prediction2.append(classes[np.argmax(pred2[0])])
-        # print(prediction2)
-        # st.warning(f"Pred2 {prediction2}")
-
-        # prediction3=[]
-        # prediction3.append(classes[np.argmax(pred3[0])])
-        # print(prediction3)
-        # st.warning(f"Pred3 {prediction3}")
-        
-        
-    
+        prediction=[]
+        prediction.append(classes[np.argmax(pred[0])])
+        print(prediction)
+        st.warning(f"The uploaded image is a : {prediction[0]}")
+        st.balloons()
 
 
 if __name__ == '__main__':
