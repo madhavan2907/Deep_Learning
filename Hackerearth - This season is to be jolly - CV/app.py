@@ -22,15 +22,48 @@ pred_model1=keras.models.load_model("./Notebooks/Models/TL_Inception_resnet_v2.h
 # pred_model2=keras.models.load_model("TL_VGG16.h5")
 # pred_model3=keras.models.load_model("TL_inception.h5")
 
+freq_plot = Image.open("./plot.jpg")
 
 def main():
     # st.title("Image classification through Transfer Learning")
     html_temp = """
     <div style="background-color:tomato;padding:10px">
     <h2 style="color:white;text-align:center;">Image classification through Transfer Learning </h2>
-    # <h2 style="color:white;text-align:center;">Image classification through Transfer Learning </h2>
+    </div>
+    
+    <div style="background-color:white;padding:10px">
+    <p style="color:black;text-align:left;">This is an Image classification application built for the below Hackerearth CV competition: </p>
+    <a href="https://www.hackerearth.com/challenges/competitive/hackerearth-deep-learning-challenge-holidays/">Competition Link</a>
+    
+    <h2 style="color:black;text-align:left;">Problem statement: </h2>
+    <p style="color:black;text-align:left;">You work for a social media platform. Your task is to create a solution using deep learning to discern whether a post is holiday-related in an effort to better monetize the platform.</p>
+    
+    <h2 style="color:black;text-align:left;">Task: </h2>
+    <p style="color:black;text-align:left;">You are given the following six categories. You are required to classify the images in the dataset based on these categories.</p>
+    <ul>
+    <li>Miscellaneous</li>
+    <li>Christmas_Tree</li>
+    <li>Jacket</li>
+    <li>Candle</li>
+    <li>Airplane</li>
+    <li>Snowman</li>
+    </ul>
+
+    <h2 style="color:black;text-align:left;">Dataset: </h2>
+    <a href="https://www.kaggle.com/nikhil741/hackerearth-holiday-season">Dataset Link</a>
+    <p style="color:black;text-align:left;">The data folder consists of two folders and one .csv file. The details are as follows:</p>
+    <ul>
+    <li>train: Contains 6469 images for 6 classes</li>
+    <li>test: Contains 3489 images</li>
+    <li>train.csv: 3489 x 2</li>
+    </ul>
+
+  
     </div>
     """
+    
+    
+
     st.markdown(html_temp, unsafe_allow_html=True)
     st.set_option('deprecation.showfileUploaderEncoding', False)
     page_bg_img = '''
@@ -44,6 +77,8 @@ def main():
 
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
+    st.write("Output class distribution")
+    st.image(freq_plot,  use_column_width=True)
     # Getting Inputs and processing it for prediction
     image_upload = st.file_uploader("Upload the image", type='jpg')
 
@@ -54,38 +89,22 @@ def main():
         image = image.resize((new_width, new_height), Image.ANTIALIAS)
         st.image(image_upload, caption='Uploaded Image.', use_column_width=True)
 
-#     from PIL import Image
-# img = Image.open('/your iamge path/image.jpg') # image extension *.png,*.jpg
-# new_width  = 128
-# new_height = 128
-# img = img.resize((new_width, new_height), Image.ANTIALIAS)
-# img.save('/new directory path/output image name.png') 
 
     if st.button("Predict"):
 
         print('Predicting')
 
-        # inputShape = (224, 224)
-        preprocess = imagenet_utils.preprocess_input
-        # preprocess = preprocess_input
-        # preprocess = imagenet_utils.preprocess_input
-
         
-        # image = load_img(image_upload, target_size=inputShape)
+        preprocess = imagenet_utils.preprocess_input
         image = img_to_array(image)
-
         image = image/255
-        print("Done")
+        # print("Done")
 
 
-        # image = np.expand_dims(image, axis=0)
-        # image = preprocess(image)
 
         print(f"[#] classifying image with Inception_Resnet_V2'... ")
         pred1 = pred_model1.predict(image.reshape(1,224,224,3))
-        # pred2 = pred_model2.predict(image.reshape(1,224,224,3))
-        # pred3 = pred_model3.predict(image.reshape(1,224,224,3))
-        # print(pred)
+
 
         classes = ['Airplane', 'Candle', 'Christmas_Tree', 'Jacket', 'Miscellaneous', 'Snowman']
         prediction1=[]
