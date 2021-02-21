@@ -6,7 +6,6 @@ Created on Tue Feb 16 2021 - 13:43:00
 
 import numpy as np
 import os
-import pickle
 import pandas as pd
 import streamlit as st
 import keras
