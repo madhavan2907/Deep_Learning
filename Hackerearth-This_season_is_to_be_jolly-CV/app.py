@@ -16,14 +16,15 @@ from keras.applications.inception_v3 import preprocess_input
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
 
-export_path = os.path.join(os.getcwd(), 'TL_Inception_resnet_v2.h5')
+# export_path = os.path.join(os.getcwd(), 'TL_Inception_resnet_v2.h5')
+# print(export_path)
 
 @st.cache(suppress_st_warning=True)
 def prediction_fun(img):
     # st.write("Caching for the first time")
-    pred_model=keras.models.load_model(export_path)
+    pred_model=keras.models.load_model('.\TL_Inception_resnet_v2.h5')
     return pred_model.predict(img.reshape(1,224,224,3))
-
+    
 
 
 
