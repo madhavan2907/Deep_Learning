@@ -15,14 +15,17 @@ from keras.applications import imagenet_utils
 from keras.applications.inception_v3 import preprocess_input
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
+# from pathlib import Path
+# p = Path('.')
 
-# export_path = os.path.join(os.getcwd(), 'TL_Inception_resnet_v2.h5')
-# print(export_path)
+export_path = os.path.join(os.getcwd(), 'TL_Inception_resnet_v2.h5')
+print(export_path)
 
 @st.cache(suppress_st_warning=True)
 def prediction_fun(img):
     # st.write("Caching for the first time")
-    pred_model=keras.models.load_model('./TL_Inception_resnet_v2.h5')
+    # pred_model=keras.models.load_model('./TL_Inception_resnet_v2.h5')
+    pred_model=keras.models.load_model(export_path)
     return pred_model.predict(img.reshape(1,224,224,3))
     
 
@@ -82,7 +85,9 @@ def main():
 
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
-    freq_plot = Image.open("./plot.jpg")
+    fig_path = os.path.join(os.getcwd(), 'plot.jpg')
+    print(fig_path)  
+    freq_plot = Image.open(fig_path)
     st.write("Output class distribution")
     st.image(freq_plot,  use_column_width=True)
     # Getting Inputs and processing it for prediction
@@ -107,7 +112,6 @@ def main():
         image = img_to_array(image)
         image = image/255
         # print("Done")
-
 
 
         print(f"[#] classifying image with Inception_Resnet_V2'... ")
