@@ -82,9 +82,9 @@ def main():
 
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
-    freq_plot = Image.open("plot.jpg")
-    st.write("Output class distribution")
-    st.image(freq_plot,  use_column_width=True)
+#     freq_plot = Image.open("plot.jpg")
+#     st.write("Output class distribution")
+#     st.image(freq_plot,  use_column_width=True)
     # Getting Inputs and processing it for prediction
     image_upload = st.file_uploader("Upload the image", type='jpg')
 
