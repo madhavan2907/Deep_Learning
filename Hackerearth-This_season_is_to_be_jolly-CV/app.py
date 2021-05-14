@@ -90,7 +90,6 @@ def main():
     freq_plot = Image.open(fig_path)
     st.write("Output class distribution")
     st.image(freq_plot,  use_column_width=True)
-    # Getting Inputs and processing it for prediction
     image_upload = st.file_uploader("Upload the image", type='jpg')
 
     if image_upload is not None:
